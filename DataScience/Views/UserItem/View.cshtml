@@ -1,6 +1,6 @@
-﻿@using DataScience.Models.UserItem
+@using DataScience.Models.UserItem
 @{
-    ViewBag.Title = "User-Item";
+    ViewBag.Title = "Comparing to user " + ViewBag.UserId;
 }
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
@@ -11,7 +11,6 @@
         <th>User ID</th>
         <th>Article ID</th>
         <th>Rating</th>
-        <th>Actions</th>
     </tr>
     </thead>
     <tbody>
@@ -28,9 +27,6 @@
                 </td>
                 <td>
                     @preference.Rating
-                </td>
-                <td>
-                    @Html.ActionLink("View similarities", "View", "UserItem", new { userId = preference.UserId }, new {@class = "btn btn-light"})
                 </td>
             </tr>
         }
