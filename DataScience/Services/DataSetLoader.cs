@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 
 namespace DataScience.Services
 {
@@ -13,12 +13,9 @@ namespace DataScience.Services
             {
                 while (!reader.EndOfStream)
                 {
-                    string line = reader.ReadLine();
+                    var line = reader.ReadLine();
 
-                    if (line != null)
-                    {
-                        result.Add(line.Split(','));
-                    }
+                    if (line != null) result.Add(line.Split(','));
                 }
             }
 

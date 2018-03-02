@@ -1,39 +1,38 @@
-﻿@using DataScience.Models.UserItem
-@{
+﻿@{
     ViewBag.Title = "User-Item";
 }
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 
-<table class="table">
+<table class="table table-bordered table-hover">
     <thead>
     <tr>
-        <th>User ID</th>
-        <th>Article ID</th>
-        <th>Rating</th>
-        <th>Actions</th>
+        <th></th>
+        @foreach (var article in ViewBag.Articles)
+        {
+            <th>@article.Key</th>
+        }
+        <th></th>
     </tr>
     </thead>
     <tbody>
     @foreach (var user in ViewBag.Users)
     {
-        foreach (UserPreference preference in user.Value)
-        {
-            <tr>
-                <th>
-                    @preference.UserId
-                </th>
+        <tr>
+            <th>@user.Value.Id</th>
+            @foreach (var article in ViewBag.Articles)
+            {
                 <td>
-                    @preference.ArticleId
+                    @if (user.Value.Ratings.ContainsKey(article.Key))
+                    {
+                        @user.Value.Ratings[article.Key]
+                    }
                 </td>
-                <td>
-                    @preference.Rating
-                </td>
-                <td>
-                    @Html.ActionLink("View similarities", "View", "UserItem", new { userId = preference.UserId }, new {@class = "btn btn-light"})
-                </td>
-            </tr>
-        }
+            }
+            <td>
+                @Html.ActionLink("View similarities", "View", "UserItem", new {userId = user.Value.Id}, new {@class = "btn btn-light"})
+            </td>
+        </tr>
     }
     </tbody>
 </table>

@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using DataScience.Models.UserItem;
 using DataScience.Services;
 
@@ -9,8 +10,9 @@ namespace DataScience.Controllers
         // GET
         public ActionResult Index()
         {
-            ViewBag.Message = "Users from the userItem dataset";
-            ViewBag.Users = GetUsers();
+            ViewBag.Message = "Ratings";
+            ViewBag.Users = GetUsers(GetPayload());
+            ViewBag.Articles = GetArticles(GetPayload());
 
             return View();
         }
@@ -18,15 +20,26 @@ namespace DataScience.Controllers
         // GET
         public ActionResult View(string userId)
         {
-            ViewBag.UserId = userId;
-            ViewBag.Users = GetUsers();
+            ViewBag.UserId = int.Parse(userId);
+            ViewBag.Users = GetUsers(GetPayload());
+            ViewBag.Articles = GetArticles(GetPayload());
+            
             return View();
         }
 
-        private UserItems GetUsers()
+        private List<string[]> GetPayload()
         {
-            var dataset = DataSetLoader.Load("userItem");
-            return new UserItems(dataset);
+            return DataSetLoader.Load("userItem");
+        }
+
+        private Dictionary<int, User> GetUsers(List<string[]> payload)
+        {
+            return Models.UserItem.User.Populate(payload);
+        }
+
+        private Dictionary<int, Article> GetArticles(List<string[]> payload)
+        {
+            return Article.Populate(payload);
         }
     }
 }
