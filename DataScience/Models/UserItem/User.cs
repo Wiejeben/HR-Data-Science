@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace DataScience.Models.UserItem
 {
@@ -18,9 +19,9 @@ namespace DataScience.Models.UserItem
             Ratings.Add(articleId, rating);
         }
 
-        public static Dictionary<int, User> Populate(IEnumerable<string[]> ratings)
+        public static SortedDictionary<int, User> Populate(IEnumerable<string[]> ratings)
         {
-            var models = new Dictionary<int, User>();
+            var models = new SortedDictionary<int, User>();
             foreach (var rating in ratings)
             {
                 var userId = int.Parse(rating[0]);

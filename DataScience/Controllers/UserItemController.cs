@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using DataScience.Models.UserItem;
 using DataScience.Services;
+using DataScience.Services.Similarity;
 
 namespace DataScience.Controllers
 {
@@ -20,9 +21,21 @@ namespace DataScience.Controllers
         // GET
         public ActionResult View(string userId)
         {
-            ViewBag.UserId = int.Parse(userId);
-            ViewBag.Users = GetUsers(GetPayload());
-            ViewBag.Articles = GetArticles(GetPayload());
+            var castedUserId = int.Parse(userId);
+            var payload = GetPayload();
+            var users = GetUsers(payload);
+
+            if (!users.TryGetValue(castedUserId, out var user))
+            {
+                throw new KeyNotFoundException("User ID did not match to a user.");
+            }
+
+            users.Remove(castedUserId);
+            
+            ViewBag.UserId = castedUserId;
+            ViewBag.Users = users;
+            ViewBag.User = user;
+            ViewBag.Articles = GetArticles(payload);
             
             return View();
         }
@@ -32,12 +45,12 @@ namespace DataScience.Controllers
             return DataSetLoader.Load("userItem");
         }
 
-        private Dictionary<int, User> GetUsers(List<string[]> payload)
+        private SortedDictionary<int, User> GetUsers(List<string[]> payload)
         {
             return Models.UserItem.User.Populate(payload);
         }
 
-        private Dictionary<int, Article> GetArticles(List<string[]> payload)
+        private SortedDictionary<int, Article> GetArticles(List<string[]> payload)
         {
             return Article.Populate(payload);
         }

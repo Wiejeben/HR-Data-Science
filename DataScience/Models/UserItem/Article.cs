@@ -11,9 +11,9 @@ namespace DataScience.Models.UserItem
             Id = id;
         }
 
-        public static Dictionary<int, Article> Populate(IEnumerable<string[]> ratings)
+        public static SortedDictionary<int, Article> Populate(IEnumerable<string[]> ratings)
         {
-            var models = new Dictionary<int, Article>();
+            var models = new SortedDictionary<int, Article>();
             foreach (var rating in ratings)
             {
                 var articleId = int.Parse(rating[1]);
@@ -25,7 +25,7 @@ namespace DataScience.Models.UserItem
 
                 models.Add(articleId, new Article(articleId));
             }
-
+            
             return models;
         }
     }

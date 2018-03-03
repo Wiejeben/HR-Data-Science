@@ -90,10 +90,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DataSetLoader.cs" />
     <Compile Include="Services\Similarity\Cosine.cs" />
+    <Compile Include="Services\Similarity\Euclidean.cs" />
     <Compile Include="Services\Similarity\Manhattan.cs" />
     <Compile Include="Services\Similarity\Pearson.cs" />
     <Compile Include="Services\Similarity\Similarity.cs" />
     <Compile Include="Services\Similarity\SimilarityList.cs" />
+    <Compile Include="Services\Similarity\SimilarityWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
