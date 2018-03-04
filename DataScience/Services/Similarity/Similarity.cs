@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace DataScience.Services.Similarity
 {
+    /// <summary>
+    /// Base implementation for all similarity calculations.
+    /// </summary>
     public abstract class Similarity
     {
         protected readonly List<Tuple<double, double>> Data;

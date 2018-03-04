@@ -4,26 +4,30 @@ using DataScience.Models.UserItem;
 
 namespace DataScience.Services.Similarity
 {
+    /// <summary>
+    /// Collects all the different similarity strategies for easy result comparison.
+    /// </summary>
     public class SimilarityWrapper
     {
+        /// <summary>
+        /// Two complete lists that are to be compared.
+        /// </summary>
         protected readonly List<Tuple<double, double>> Data;
+
+        /// <summary>
+        /// Two lists that are to be compered, where empty values are set to zero.
+        /// </summary>
         protected readonly List<Tuple<double, double>> ZerodData;
 
-        public SimilarityWrapper(List<Tuple<double, double>> data)
-        {
-            Data = data;
-        }
-
-        public SimilarityWrapper(IReadOnlyList<double> x, IReadOnlyList<double> y)
-        {
-            Data = SimilarityList.Create(x, y);
-        }
-
-        public SimilarityWrapper(IReadOnlyDictionary<int, float> xRatings, IReadOnlyDictionary<int, float> yRatings, SortedDictionary<int, Article> articles)
+        /// <summary>
+        /// Converts two lists together based on the articles.
+        /// </summary>
+        public SimilarityWrapper(IReadOnlyDictionary<int, float> xRatings, IReadOnlyDictionary<int, float> yRatings,
+            SortedDictionary<int, Article> articles)
         {
             Data = new List<Tuple<double, double>>();
             ZerodData = new List<Tuple<double, double>>();
-            
+
             foreach (var article in articles)
             {
                 var complete = true;
@@ -39,36 +43,49 @@ namespace DataScience.Services.Similarity
                     complete = false;
                 }
 
+                // Only include complete datasets
                 if (complete)
                 {
                     Data.Add(new Tuple<double, double>(x, y));
                 }
-                
+
                 ZerodData.Add(new Tuple<double, double>(x, y));
             }
         }
 
+        /// <summary>
+        /// Calculate similarity based on euclidean.
+        /// </summary>
         public double Euclidean()
         {
-            var similarity = new Euclidean(Data); // TODO: Decide whether to use the zerod data
+            var similarity = new Euclidean(Data);
             return similarity.Calculate();
         }
 
+        /// <summary>
+        /// Calculate similarity based on manhattan.
+        /// </summary>
         public double Manhattan()
         {
-            var similarity = new Manhattan(Data); // TODO: Decide whether to use the zerod data
+            var similarity = new Manhattan(Data);
             return similarity.Calculate();
         }
 
+        /// <summary>
+        /// Calculate similarity based on pearson correlation coefficient.
+        /// </summary>
         public double Pearson()
         {
-            var similarity = new Pearson(Data); // TODO: Decide whether to use the zerod data
+            var similarity = new Pearson(Data);
             return similarity.Calculate();
         }
-        
+
+        /// <summary>
+        /// Calculate similarity based on Cosine.
+        /// </summary>
         public double Cosine()
         {
-            var similarity = new Cosine(Data); // TODO: Decide whether to use the zerod data
+            var similarity = new Cosine(ZerodData);
             return similarity.Calculate();
         }
     }

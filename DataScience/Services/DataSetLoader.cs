@@ -5,6 +5,9 @@ namespace DataScience.Services
 {
     public static class DataSetLoader
     {
+        /// <summary>
+        /// Get dataset by filename from the datasets directory.
+        /// </summary>
         public static List<string[]> Load(string fileName)
         {
             var result = new List<string[]>();

@@ -5,6 +5,12 @@ namespace DataScience.Services.Similarity
 {
     public static class SimilarityList
     {
+        /// <summary>
+        /// Generate list with tuples for the similarity measurement.
+        /// </summary>
+        /// 
+        /// TODO: Improve this by including a list of articles.
+        /// 
         public static List<Tuple<double, double>> Create(IReadOnlyList<double> x, IReadOnlyList<double> y)
         {
             var values = new List<Tuple<double, double>>();

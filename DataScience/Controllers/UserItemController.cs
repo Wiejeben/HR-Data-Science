@@ -29,7 +29,7 @@ namespace DataScience.Controllers
             {
                 throw new KeyNotFoundException("User ID did not match to a user.");
             }
-
+            
             users.Remove(castedUserId);
             
             ViewBag.UserId = castedUserId;
@@ -40,17 +40,26 @@ namespace DataScience.Controllers
             return View();
         }
 
-        private List<string[]> GetPayload()
+        /// <summary>
+        /// Get payload used in this controller.
+        /// </summary>
+        private static List<string[]> GetPayload()
         {
             return DataSetLoader.Load("userItem");
         }
 
-        private SortedDictionary<int, User> GetUsers(List<string[]> payload)
+        /// <summary>
+        /// Get users from the provided payload.
+        /// </summary>
+        private static SortedDictionary<int, User> GetUsers(IEnumerable<string[]> payload)
         {
             return Models.UserItem.User.Populate(payload);
         }
 
-        private SortedDictionary<int, Article> GetArticles(List<string[]> payload)
+        /// <summary>
+        /// Get articles from the provided payload.
+        /// </summary>
+        private static SortedDictionary<int, Article> GetArticles(IEnumerable<string[]> payload)
         {
             return Article.Populate(payload);
         }

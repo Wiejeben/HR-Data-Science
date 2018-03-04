@@ -19,6 +19,9 @@ namespace DataScience.Models.UserItem
             Ratings.Add(articleId, rating);
         }
 
+        /// <summary>
+        /// Create user models from the provided list with array of strings.
+        /// </summary>
         public static SortedDictionary<int, User> Populate(IEnumerable<string[]> ratings)
         {
             var models = new SortedDictionary<int, User>();
