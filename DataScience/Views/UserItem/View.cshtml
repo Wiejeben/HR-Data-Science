@@ -1,5 +1,5 @@
-@using DataScience.Models.UserItem
 @using DataScience.Services.Similarity
+@using DataScience.Models.UserItem
 @{
     ViewBag.Title = "User ID: " + ViewBag.UserId;
 }
@@ -37,11 +37,11 @@
                 </td>
             }
             <td class="td-compact">
-                @{ var similarity = new SimilarityWrapper(userItem.Value.Ratings, user.Ratings, ViewBag.Articles); }
-                Euclidean: @Math.Round(similarity.Euclidean(), 2)<br />
-                Manhatttan: @Math.Round(similarity.Manhattan(), 2)<br />
-                Pearson: @Math.Round(similarity.Pearson(), 2)<br />
-                Cosine: @Math.Round(similarity.Cosine(), 2)
+                @{ var similarity = new SimilarityWrapper(new SimilarityList(userItem.Value.Ratings, user.Ratings, ViewBag.Articles)); }
+                Euclidean: @Math.Round(similarity.Euclidean(), 4)<br/>
+                Manhatttan: @Math.Round(similarity.Manhattan(), 4)<br/>
+                Pearson: @Math.Round(similarity.Pearson(), 4)<br/>
+                Cosine: @Math.Round(similarity.Cosine(), 4)
             </td>
         </tr>
     }

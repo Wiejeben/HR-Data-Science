@@ -6,17 +6,13 @@ namespace DataScience.Services.Similarity
 {
     public class Manhattan : Similarity
     {
-        public Manhattan(List<Tuple<double, double>> data) : base(data)
-        {
-        }
-
-        public Manhattan(IReadOnlyList<double> x, IReadOnlyList<double> y) : base(x, y)
+        public Manhattan(SimilarityList data) : base(data)
         {
         }
 
         public double Distance()
         {
-            return (from value in Data select Math.Abs(value.Item1 - value.Item2)).Sum();
+            return (from value in Data.Data select Math.Abs(value.Item1 - value.Item2)).Sum();
         }
 
         public override double Calculate()

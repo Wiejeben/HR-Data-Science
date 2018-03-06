@@ -5,11 +5,7 @@ namespace DataScience.Services.Similarity
 {
     public class Pearson : Similarity
     {
-        public Pearson(List<Tuple<double, double>> data) : base(data)
-        {
-        }
-
-        public Pearson(IReadOnlyList<double> x, IReadOnlyList<double> y) : base(x, y)
+        public Pearson(SimilarityList data) : base(data)
         {
         }
 
@@ -21,9 +17,10 @@ namespace DataScience.Services.Similarity
             double sumX2 = 0;
             double sumY2 = 0;
 
+            // ReSharper disable once InconsistentNaming
             double sumXY = 0;
 
-            foreach (var value in Data)
+            foreach (var value in Data.Data)
             {
                 sumX += value.Item1;
                 sumY += value.Item2;

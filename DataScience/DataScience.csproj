@@ -92,6 +92,7 @@
     <Compile Include="Services\Similarity\Cosine.cs" />
     <Compile Include="Services\Similarity\Euclidean.cs" />
     <Compile Include="Services\Similarity\Manhattan.cs" />
+    <Compile Include="Services\Similarity\NearestNeighbors.cs" />
     <Compile Include="Services\Similarity\Pearson.cs" />
     <Compile Include="Services\Similarity\Similarity.cs" />
     <Compile Include="Services\Similarity\SimilarityList.cs" />

@@ -1,32 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using DataScience.Models.UserItem;
 
 namespace DataScience.Services.Similarity
 {
-    public static class SimilarityList
-    {
+    public class SimilarityList
+    { 
         /// <summary>
-        /// Generate list with tuples for the similarity measurement.
+        /// Two complete lists that are to be compared.
         /// </summary>
-        /// 
-        /// TODO: Improve this by including a list of articles.
-        /// 
-        public static List<Tuple<double, double>> Create(IReadOnlyList<double> x, IReadOnlyList<double> y)
+        public List<Tuple<double, double>> Data { get; }
+
+        /// <summary>
+        /// Two lists that are to be compered, where empty values are set to zero.
+        /// </summary>
+        public List<Tuple<double, double>> ZerodData { get; }
+        
+        public SimilarityList(IReadOnlyDictionary<int, float> xRatings, IReadOnlyDictionary<int, float> yRatings, SortedDictionary<int, Article> articles)
         {
-            var values = new List<Tuple<double, double>>();
+            Data = new List<Tuple<double, double>>();
+            ZerodData = new List<Tuple<double, double>>();
 
-            // Merge two arrays into a single list with tuples
-            var length = x.Count;
-            if (length != y.Count) throw new Exception("Array lengths must be equal to be able to compare values.");
-
-            for (var i = 1; i <= length; i++)
+            foreach (var article in articles)
             {
-                var index = i - 1;
+                var complete = true;
+                if (!xRatings.TryGetValue(article.Key, out var x))
+                {
+                    x = 0.0f;
+                    complete = false;
+                }
 
-                values.Add(new Tuple<double, double>(x[index], y[index]));
+                if (!yRatings.TryGetValue(article.Key, out var y))
+                {
+                    y = 0.0f;
+                    complete = false;
+                }
+
+                // Only include complete datasets
+                if (complete)
+                {
+                    Data.Add(new Tuple<double, double>(x, y));
+                }
+
+                ZerodData.Add(new Tuple<double, double>(x, y));
             }
-
-            return values;
         }
     }
 }

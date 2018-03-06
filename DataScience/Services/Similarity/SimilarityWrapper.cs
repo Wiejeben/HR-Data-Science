@@ -12,45 +12,14 @@ namespace DataScience.Services.Similarity
         /// <summary>
         /// Two complete lists that are to be compared.
         /// </summary>
-        protected readonly List<Tuple<double, double>> Data;
-
-        /// <summary>
-        /// Two lists that are to be compered, where empty values are set to zero.
-        /// </summary>
-        protected readonly List<Tuple<double, double>> ZerodData;
+        protected readonly SimilarityList Data;
 
         /// <summary>
         /// Converts two lists together based on the articles.
         /// </summary>
-        public SimilarityWrapper(IReadOnlyDictionary<int, float> xRatings, IReadOnlyDictionary<int, float> yRatings,
-            SortedDictionary<int, Article> articles)
+        public SimilarityWrapper(SimilarityList data)
         {
-            Data = new List<Tuple<double, double>>();
-            ZerodData = new List<Tuple<double, double>>();
-
-            foreach (var article in articles)
-            {
-                var complete = true;
-                if (!xRatings.TryGetValue(article.Key, out var x))
-                {
-                    x = 0.0f;
-                    complete = false;
-                }
-
-                if (!yRatings.TryGetValue(article.Key, out var y))
-                {
-                    y = 0.0f;
-                    complete = false;
-                }
-
-                // Only include complete datasets
-                if (complete)
-                {
-                    Data.Add(new Tuple<double, double>(x, y));
-                }
-
-                ZerodData.Add(new Tuple<double, double>(x, y));
-            }
+            Data = data;
         }
 
         /// <summary>
@@ -85,7 +54,7 @@ namespace DataScience.Services.Similarity
         /// </summary>
         public double Cosine()
         {
-            var similarity = new Cosine(ZerodData);
+            var similarity = new Cosine(Data);
             return similarity.Calculate();
         }
     }

@@ -33,7 +33,7 @@ namespace DataScience.Controllers
             }
 
             var user = users[castedUserId];
-
+            
             ViewBag.UserId = castedUserId;
             ViewBag.Users = users;
             ViewBag.User = user;
