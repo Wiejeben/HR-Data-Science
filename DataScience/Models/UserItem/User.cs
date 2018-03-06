@@ -5,8 +5,8 @@ namespace DataScience.Models.UserItem
 {
     public class User
     {
-        public int Id;
-        public Dictionary<int, float> Ratings;
+        public readonly int Id;
+        public readonly Dictionary<int, float> Ratings;
 
         public User(int id)
         {

@@ -27,9 +27,13 @@
                     {
                         @user.Value.Ratings[article.Key]
                     }
+                    else
+                    {
+                        @("-")
+                    }
                 </td>
             }
-            <td>
+            <td class="td-compact">
                 @Html.ActionLink("View similarities", "View", "UserItem", new {userId = user.Value.Id}, new {@class = "btn btn-light"})
             </td>
         </tr>

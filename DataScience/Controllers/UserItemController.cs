@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 using DataScience.Models.UserItem;
 using DataScience.Services;
@@ -25,18 +26,19 @@ namespace DataScience.Controllers
             var payload = GetPayload();
             var users = GetUsers(payload);
 
-            if (!users.TryGetValue(castedUserId, out var user))
+            // Throw not found exception if user is not listed
+            if (!users.ContainsKey(castedUserId))
             {
-                throw new KeyNotFoundException("User ID did not match to a user.");
+                throw new HttpException(404, "Not found");
             }
-            
-            users.Remove(castedUserId);
-            
+
+            var user = users[castedUserId];
+
             ViewBag.UserId = castedUserId;
             ViewBag.Users = users;
             ViewBag.User = user;
             ViewBag.Articles = GetArticles(payload);
-            
+
             return View();
         }
 

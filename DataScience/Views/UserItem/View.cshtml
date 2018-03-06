@@ -1,12 +1,11 @@
 @using DataScience.Models.UserItem
 @using DataScience.Services.Similarity
 @{
-    ViewBag.Title = "Comparing to user " + ViewBag.UserId;
+    ViewBag.Title = "User ID: " + ViewBag.UserId;
 }
 <h2>@ViewBag.Title</h2>
 <h3>@ViewBag.Message</h3>
 
-<h4>Current</h4>
 <table class="table table-bordered table-hover">
     <thead>
     <tr>
@@ -15,44 +14,14 @@
         {
             <th>@article.Key</th>
         }
-        <th></th>
+        <th>Similarity</th>
     </tr>
     </thead>
     <tbody>
     @{ User user = ViewBag.User; }
-    <tr>
-        <th>@user.Id</th>
-        @foreach (var article in ViewBag.Articles)
-        {
-            <td>
-                @if (user.Ratings.ContainsKey(article.Key))
-                {
-                    @user.Ratings[article.Key]
-                }
-            </td>
-        }
-        <td>
-            @Html.ActionLink("View similarities", "View", "UserItem", new {userId = user.Id}, new {@class = "btn btn-light"})
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<table class="table table-bordered table-hover">
-    <thead>
-    <tr>
-        <th></th>
-        @foreach (var article in ViewBag.Articles)
-        {
-            <th>@article.Key</th>
-        }
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
     @foreach (KeyValuePair<int, User> userItem in ViewBag.Users)
     {
-        <tr>
+        <tr class="@(userItem.Key == user.Id ? "table-active" : "")">
             <th>@userItem.Value.Id</th>
             @foreach (var article in ViewBag.Articles)
             {
@@ -61,16 +30,18 @@
                     {
                         @userItem.Value.Ratings[article.Key]
                     }
+                    else
+                    {
+                        @("-")
+                    }
                 </td>
             }
-            <td>
-                <ul>
-                    @{ var similarity = new SimilarityWrapper(userItem.Value.Ratings, user.Ratings, ViewBag.Articles); }
-                    <li>Euclidean: @similarity.Euclidean()</li>
-                    <li>Manhatttan: @similarity.Manhattan()</li>
-                    <li>Pearson: @similarity.Pearson()</li>
-                    <li>Cosine: @similarity.Cosine()</li>
-                </ul>
+            <td class="td-compact">
+                @{ var similarity = new SimilarityWrapper(userItem.Value.Ratings, user.Ratings, ViewBag.Articles); }
+                Euclidean: @Math.Round(similarity.Euclidean(), 2)<br />
+                Manhatttan: @Math.Round(similarity.Manhattan(), 2)<br />
+                Pearson: @Math.Round(similarity.Pearson(), 2)<br />
+                Cosine: @Math.Round(similarity.Cosine(), 2)
             </td>
         </tr>
     }
