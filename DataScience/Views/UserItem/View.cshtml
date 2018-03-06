@@ -1,10 +1,8 @@
 @using DataScience.Services.Similarity
 @using DataScience.Models.UserItem
-@{
-    ViewBag.Title = "User ID: " + ViewBag.UserId;
-}
+@{ ViewBag.Title = "User ID: " + ViewBag.UserId; }
+@{ User user = ViewBag.User; }
 <h2>@ViewBag.Title</h2>
-<h3>@ViewBag.Message</h3>
 
 <table class="table table-bordered table-hover">
     <thead>
@@ -18,7 +16,6 @@
     </tr>
     </thead>
     <tbody>
-    @{ User user = ViewBag.User; }
     @foreach (KeyValuePair<int, User> userItem in ViewBag.Users)
     {
         <tr class="@(userItem.Key == user.Id ? "table-active" : "")">
@@ -47,3 +44,44 @@
     }
     </tbody>
 </table>
+
+@foreach (KeyValuePair<string, IEnumerable<Tuple<User, float>>> neighbor in ViewBag.Neighbors)
+{
+    <h3>Nearest Neighbors: @neighbor.Key</h3>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th></th>
+            @foreach (var article in ViewBag.Articles)
+            {
+                <th>@article.Key</th>
+            }
+            <th>Similarity</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (Tuple<User, float> userItem in neighbor.Value)
+        {
+            <tr>
+                <th>@userItem.Item1.Id</th>
+                @foreach (var article in ViewBag.Articles)
+                {
+                    <td>
+                        @if (userItem.Item1.Ratings.ContainsKey(article.Key))
+                        {
+                            @userItem.Item1.Ratings[article.Key]
+                        }
+                        else
+                        {
+                            @("-")
+                        }
+                    </td>
+                }
+                <td class="td-compact">
+                    @userItem.Item2
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

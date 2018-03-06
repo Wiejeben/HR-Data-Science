@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DataScience.Models.UserItem;
@@ -25,6 +27,7 @@ namespace DataScience.Controllers
             var castedUserId = int.Parse(userId);
             var payload = GetPayload();
             var users = GetUsers(payload);
+            var articles = GetArticles(payload);
 
             // Throw not found exception if user is not listed
             if (!users.ContainsKey(castedUserId))
@@ -37,7 +40,16 @@ namespace DataScience.Controllers
             ViewBag.UserId = castedUserId;
             ViewBag.Users = users;
             ViewBag.User = user;
-            ViewBag.Articles = GetArticles(payload);
+            ViewBag.Articles = articles;
+
+            const float threshold = 0.35f;
+            var neighborHelper = new NearestNeighbors(users.Values.ToList(), user, articles);
+            ViewBag.Neighbors = new Dictionary<string, IEnumerable<Tuple<User, float>>>
+            {
+                {"pearson", neighborHelper.ListSimilarities(new Pearson(), threshold)},
+                {"cosine", neighborHelper.ListSimilarities(new Cosine(), threshold)},
+                {"euclidean", neighborHelper.ListSimilarities(new Euclidean(), threshold)}
+            };
 
             return View();
         }

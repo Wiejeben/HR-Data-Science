@@ -27,8 +27,7 @@ namespace DataScience.Services.Similarity
         /// </summary>
         public double Euclidean()
         {
-            var similarity = new Euclidean(Data);
-            return similarity.Calculate();
+            return Calculate(new Euclidean());
         }
 
         /// <summary>
@@ -36,8 +35,7 @@ namespace DataScience.Services.Similarity
         /// </summary>
         public double Manhattan()
         {
-            var similarity = new Manhattan(Data);
-            return similarity.Calculate();
+            return Calculate(new Manhattan());
         }
 
         /// <summary>
@@ -45,8 +43,7 @@ namespace DataScience.Services.Similarity
         /// </summary>
         public double Pearson()
         {
-            var similarity = new Pearson(Data);
-            return similarity.Calculate();
+            return Calculate(new Pearson());
         }
 
         /// <summary>
@@ -54,8 +51,15 @@ namespace DataScience.Services.Similarity
         /// </summary>
         public double Cosine()
         {
-            var similarity = new Cosine(Data);
-            return similarity.Calculate();
+            return Calculate(new Cosine());
+        }
+
+        /// <summary>
+        /// Performs calculation on similarity service.
+        /// </summary>
+        private double Calculate(Similarity similarity)
+        {
+            return similarity.Calculate(Data);
         }
     }
 }

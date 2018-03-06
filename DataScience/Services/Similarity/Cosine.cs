@@ -5,17 +5,13 @@ namespace DataScience.Services.Similarity
 {
     public class Cosine : Similarity
     {
-        public Cosine(SimilarityList data) : base(data)
-        {
-        }
-        
-        public override double Calculate()
+        public double Calculate(SimilarityList data)
         {
             double multiSum = 0;
             double sumX2 = 0;
             double sumY2 = 0;
 
-            foreach (var value in Data.ZerodData)
+            foreach (var value in data.ZerodData)
             {
                 multiSum += value.Item1 * value.Item2;
 
