@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Data_Mining.Pages
 {
-    public class AboutModel : PageModel
+    public class IndexModel : PageModel
     {
         public string Message { get; set; }
 
