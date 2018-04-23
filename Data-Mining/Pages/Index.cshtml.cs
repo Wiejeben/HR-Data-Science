@@ -8,7 +8,7 @@ namespace Data_Mining.Pages
 
         public void OnGet()
         {
-            Message = "This is a test";
+            Message = "Data science exercies";
         }
     }
 }
