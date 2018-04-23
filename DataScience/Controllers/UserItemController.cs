@@ -41,7 +41,7 @@ namespace DataScience.Controllers
             ViewBag.Users = users;
             ViewBag.User = user;
             ViewBag.Articles = articles;
-
+            
             const float threshold = 0.35f;
             var neighborHelper = new NearestNeighbors(users.Values.ToList(), user, articles);
             ViewBag.Neighbors = new Dictionary<string, IEnumerable<Tuple<User, float>>>
