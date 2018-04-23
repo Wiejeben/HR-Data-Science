@@ -16,6 +16,9 @@ var scatterChart = new Chart(ctx, {
             labels: {
                 fontSize: 20,
             }
+        },
+        animation: {
+            duration: 0
         }
     }
 });
