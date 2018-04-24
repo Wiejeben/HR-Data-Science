@@ -5,41 +5,15 @@
 }
 <h2>@ViewData["Title"]</h2>
 
-<canvas id="cluster" width="400" height="150"></canvas>
+<canvas id="cluster" width="400" height="300"></canvas>
 
 <script type="text/javascript">
     window.datasets = [
         {
-            label: 'Cluster 1',
-            backgroundColor: 'green',
+            label: 'Points',
             borderWidth: 0,
             pointRadius: 5,
-            data: [
-                {
-                    x: -10,
-                    y: 0
-                }, {
-                    x: 0,
-                    y: 10
-                }, {
-                    x: 10,
-                    y: 5
-                }
-            ]
-        }, {
-            label: 'Cluster 2',
-            backgroundColor: 'red',
-            borderWidth: 0,
-            pointRadius: 5,
-            data: [
-                {
-                    x: 10,
-                    y: 20
-                }, {
-                    x: 15,
-                    y: 10
-                }
-            ]
+            data: @Model.PointsToJson()
         }
     ]
 </script>
