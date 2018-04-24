@@ -9,7 +9,6 @@ namespace Data_Mining.Pages
 {
     public class ClusterModel : PageModel
     {
-        public List<Point> Points { get; private set; }
         public int MaxHeight { get; set; }
         public int MaxWidth { get; set; }
         public Cluster Cluster { get; set; }
