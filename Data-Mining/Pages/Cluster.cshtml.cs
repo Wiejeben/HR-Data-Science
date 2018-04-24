@@ -12,68 +12,47 @@ namespace Data_Mining.Pages
         public List<Point> Points { get; private set; }
         public int MaxHeight { get; set; }
         public int MaxWidth { get; set; }
+        public Cluster Cluster { get; set; }
 
         public void OnGet()
         {
-            var data = new List<Point>();
+            Cluster = GetInitialCluster("datasets/WineData.csv");
+        }
+
+        /**
+         * Get initial cluster based on binary values.
+         */
+        private Cluster GetInitialCluster(string fileName)
+        {
+            Cluster = new Cluster("Initial", "lightgray");
+
             // Read dataset
-            using (var reader = new StreamReader("datasets/WineData.csv"))
+            using (var reader = new StreamReader(fileName))
             {
-                int height = 0;
+                var height = 0;
                 while (!reader.EndOfStream)
                 {
-                    string line = reader.ReadLine();
-                    string[] values = line.Split(',');
+                    var line = reader.ReadLine();
+                    var values = line.Split(',');
+                    MaxWidth = values.Length;
 
-                    int width = 0;
-                    foreach (string value in values)
+                    var width = 0;
+                    foreach (var value in values)
                     {
+                        // Register coordinates of locations where the value is "1"
                         if (value == "1")
                         {
-                            // Register coordinates of locations where the value is "1"
-                            data.Add(new Point(width, height));
+                            Cluster.Add(new Point(width, height));
                         }
 
                         width++;
                     }
 
-                    MaxWidth = width;
                     height++;
                 }
-                MaxHeight = height; 
+
+                MaxHeight = height;
             }
-
-            Points = data;
-        }
-
-        /**
-         * Output points as JSON array.
-         */
-        public string PointsToJson()
-        {
-            var result = "";
-
-            foreach (var point in Points)
-            {
-                result += point.ToJson() + ",";
-            }
-
-            return "[" + result + "]";
-        }
-
-        public string RandomPositions(int amount)
-        {
-            var result = "";
-            var random = new Random();
-
-            for (int i = 0; i < amount; i++)
-            {
-                var point = new Point(random.Next(0, MaxWidth), random.Next(0, MaxHeight));
-
-                result += point.ToJson() + ",";
-            }
-
-            return "[" + result + "]";
         }
     }
 }

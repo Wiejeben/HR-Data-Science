@@ -9,18 +9,6 @@
 
 <script type="text/javascript">
     window.datasets = [
-        {
-            label: 'Points',
-            borderWidth: 0,
-            pointRadius: 5,
-            data: @Html.Raw(Model.PointsToJson())
-        },
-        {
-            label: 'Clusters',
-            backgroundColor: 'red',
-            borderWidth: 0,
-            pointRadius: 5,
-            data: @Html.Raw(Model.RandomPositions(5))
-        }
+        @Html.Raw(Model.Cluster.ToJson())
     ]
 </script>
