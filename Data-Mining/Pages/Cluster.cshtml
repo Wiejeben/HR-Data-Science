@@ -13,7 +13,7 @@
             label: 'Points',
             borderWidth: 0,
             pointRadius: 5,
-            data: @Model.PointsToJson()
+            data: @Html.Raw(Model.PointsToJson())
         }
     ]
 </script>
