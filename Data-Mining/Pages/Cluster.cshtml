@@ -14,6 +14,13 @@
             borderWidth: 0,
             pointRadius: 5,
             data: @Html.Raw(Model.PointsToJson())
+        },
+        {
+            label: 'Clusters',
+            backgroundColor: 'red',
+            borderWidth: 0,
+            pointRadius: 5,
+            data: @Html.Raw(Model.RandomPositions(5))
         }
     ]
 </script>
