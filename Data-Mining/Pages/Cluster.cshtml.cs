@@ -23,7 +23,7 @@ namespace Data_Mining.Pages
          */
         private Cluster GetInitialCluster(string fileName)
         {
-            Cluster = new Cluster("Initial", "lightgray");
+            var cluster = new Cluster("Initial", "lightgray");
 
             // Read dataset
             using (var reader = new StreamReader(fileName))
@@ -41,7 +41,7 @@ namespace Data_Mining.Pages
                         // Register coordinates of locations where the value is "1"
                         if (value == "1")
                         {
-                            Cluster.Add(new Point(width, height));
+                            cluster.Add(new Point(width, height));
                         }
 
                         width++;
@@ -52,6 +52,8 @@ namespace Data_Mining.Pages
 
                 MaxHeight = height;
             }
+
+            return cluster;
         }
     }
 }
