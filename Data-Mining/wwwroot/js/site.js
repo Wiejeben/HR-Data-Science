@@ -12,13 +12,19 @@ if (cluster) {
                 xAxes: [{
                     type: 'linear',
                     position: 'bottom'
-                }]
+                }],
+                // yAxes: [{
+                //     ticks: {
+                //         suggestedMax: 100
+                //     }
+                // }]
             },
             legend: {
-                labels: {
-                    fontSize: 20,
-                    fontColor: '#333333'
-                }
+                display: false, // hide legend
+                // labels: {
+                //     fontSize: 20,
+                //     fontColor: '#333333'
+                // }
             },
             animation: {
                 duration: 0 // general animation time

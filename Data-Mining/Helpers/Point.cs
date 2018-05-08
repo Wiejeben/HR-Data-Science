@@ -4,10 +4,10 @@ namespace Data_Mining.Helpers
 {
     public class Point
     {
-        public float X { get; set; }
-        public float Y { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
-        public Point(float x, float y)
+        public Point(int x, int y)
         {
             X = x;
             Y = y;

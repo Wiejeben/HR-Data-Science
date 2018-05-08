@@ -12,9 +12,8 @@ namespace Data_Mining.Helpers
         public string Color { get; set; }
         public Point Centroid { get; set; }
 
-        public Cluster(string label, string color, Point centroid = null)
+        public Cluster(string color, Point centroid = null)
         {
-            Label = label;
             Color = color;
             Centroid = centroid;
         }
@@ -31,23 +30,23 @@ namespace Data_Mining.Helpers
             if (Centroid != null)
             {
                 centroidData = @"{
-                    label: '" + Label + @" - Centroid',
                     backgroundColor: '" + Color + @"',
                     borderWidth: 0,
+                    pointHoverBorderWidth: 0,
                     pointRadius: 10,
+                    pointHoverRadius: 10,
                     data: [" + Centroid.ToJson() + @"],
                 },";
             }
-            
-            return centroidData + @"
-                {
-                    label: '" + Label + @"',
-                    backgroundColor: '" + Color + @"',
-                    borderWidth: 0,
-                    pointRadius: 5,
-                    data: [" + data + @"],
-                }
-            ";
+
+            return centroidData + @"{
+                backgroundColor: '" + Color + @"',
+                borderWidth: 0,
+                pointHoverBorderWidth: 0,
+                pointRadius: 5,
+                pointHoverRadius: 5,
+                data: [" + data.TrimEnd(',') + @"]
+            }";
         }
     }
 }

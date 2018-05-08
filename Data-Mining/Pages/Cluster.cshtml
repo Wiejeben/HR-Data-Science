@@ -1,14 +1,18 @@
 ﻿@page
+@using Helpers
 @model ClusterModel
 @{
     ViewData["Title"] = "Cluster Assignment";
 }
 <h2>@ViewData["Title"]</h2>
 
-<canvas id="cluster" width="400" height="300"></canvas>
+<canvas id="cluster" width="400" height="100"></canvas>
 
 <script type="text/javascript">
     window.datasets = [
-        @Html.Raw(Model.Cluster.ToJson())
+        @foreach (Cluster cluster in Model.Dataset)
+        {
+            @Html.Raw(cluster.ToJson() + ',')
+        }
     ]
 </script>
