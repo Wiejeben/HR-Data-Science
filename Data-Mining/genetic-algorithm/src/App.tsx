@@ -3,18 +3,6 @@ import styled from 'styled-components';
 import Population from "./services/Population";
 import DNA from "./services/DNA";
 
-const Wrapper = styled.div`
-    margin: 0 auto;
-    max-width: 1000px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between
-`;
-
-const Title = styled.h1``;
-
-const Column = styled.section``;
-
 interface IAppState {
     bestPhrase: string;
     population: DNA[];
@@ -24,7 +12,7 @@ interface IAppState {
 }
 
 export default class App extends React.Component<any, IAppState> {
-    protected targetPhrase: string = 'To be or not to be.';
+    protected targetPhrase: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis sagittis venenatis.';
     protected mutationRate: number = 0.01;
     protected maxPopulation: number = 200;
     protected population: Population;
@@ -41,9 +29,9 @@ export default class App extends React.Component<any, IAppState> {
 
     public evolve(): void {
         const start = performance.now();
+        this.population.calcFitness();
         this.population.naturalSelection();
         this.population.generate();
-        this.population.calcFitness();
         const end = performance.now();
 
         this.setState({
@@ -51,14 +39,14 @@ export default class App extends React.Component<any, IAppState> {
             totalExecutionTime: this.state.totalExecutionTime + (end - start)
         });
 
-        if (this.population.best().toString() !== this.targetPhrase) {
+        if (this.population.best().getPhrase() !== this.targetPhrase) {
             window.requestAnimationFrame(this.evolve)
         }
     }
 
     public getPopulationState() {
         return {
-            bestPhrase: this.population.best().toString(),
+            bestPhrase: this.population.best().getPhrase(),
             population: this.population.getPopulation(),
             averageFitness: this.population.averageFitness(),
             totalGenerations: this.population.getGeneration(),
@@ -99,10 +87,22 @@ export default class App extends React.Component<any, IAppState> {
                 </Column>
                 <Column>
                     <ul>
-                        {this.state.population.map((value, key) => <li key={key}>{value.toString()}</li>)}
+                        {this.state.population.map((value, key) => <li key={key}>{value.getPhrase()}</li>)}
                     </ul>
                 </Column>
             </Wrapper>
         );
     }
 }
+
+const Wrapper = styled.div`
+    margin: 0 auto;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
+`;
+
+const Title = styled.h1``;
+
+const Column = styled.section``;

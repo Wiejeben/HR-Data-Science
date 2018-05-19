@@ -1,3 +1,8 @@
+/**
+ * Notes:
+ * Genotype: How the data is stored (array of chars)
+ * Phenotype: The expression of the data (visualisation) - (a string)
+ */
 export default class DNA {
     public static randomChar(): string {
         let c = Math.floor(DNA.randomNumber(63, 122));
@@ -31,10 +36,20 @@ export default class DNA {
         this.genes = genes;
     }
 
-    public toString(): string {
+    /**
+     * Converts character array to a String.
+     *
+     * @return {string}
+     */
+    public getPhrase(): string {
         return this.genes.join('');
     }
 
+    /**
+     * Fitness function (Returns floating point % of "correct" characters)
+     *
+     * @param {string} target
+     */
     public calcFitness(target: string): void {
         let score = 0;
         for (let i = 0; i < this.genes.length; i++) {
@@ -48,13 +63,13 @@ export default class DNA {
     }
 
     /**
-     * Mix two DNA objects.
+     * Mix two DNA objects into a new one.
      *
      * @param {DNA} partner
      * @return {DNA}
      */
     public crossover(partner: DNA): DNA {
-        const genes = [];
+        const genes: string[] = [];
 
         const midpoint = Math.floor(DNA.randomNumber(0, this.genes.length));
 
@@ -70,6 +85,11 @@ export default class DNA {
         return new DNA(genes);
     }
 
+    /**
+     * Based on a mutation probability, picks a new random character.
+     *
+     * @param {number} rate
+     */
     public mutate(rate: number): void {
         for (let i = 0; i < this.genes.length; i++) {
             if (Math.random() < rate) {
