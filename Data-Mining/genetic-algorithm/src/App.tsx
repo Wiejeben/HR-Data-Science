@@ -20,6 +20,7 @@ interface IAppState {
     population: DNA[];
     averageFitness: number;
     totalGenerations: number;
+    totalExecutionTime: number;
 }
 
 export default class App extends React.Component<any, IAppState> {
@@ -37,15 +38,21 @@ export default class App extends React.Component<any, IAppState> {
         this.population.calcFitness();
         this.state = {
             ...this.getPopulationState(),
+            totalExecutionTime: 0,
         };
     }
 
     public evolve(): void {
+        const start = performance.now();
         this.population.naturalSelection();
         this.population.generate();
-
         this.population.calcFitness();
-        this.setState(this.getPopulationState());
+        const end = performance.now();
+
+        this.setState({
+            ...this.getPopulationState(),
+            totalExecutionTime: this.state.totalExecutionTime + (end - start)
+        });
 
         if (this.population.best().toString() !== this.targetPhrase) {
             window.requestAnimationFrame(this.evolve)
@@ -73,6 +80,7 @@ export default class App extends React.Component<any, IAppState> {
                         average fitness: {(this.state.averageFitness * 100).toFixed(2)}%<br/>
                         total population: {this.maxPopulation}<br/>
                         mutation rate: {this.mutationRate * 100}%<br/>
+                        average execution time: { (this.state.totalGenerations > 0) ? (this.state.totalExecutionTime / this.state.totalGenerations).toFixed(2) : 0}ms<br/>
                         <button onClick={this.evolve}>Start evolving</button>
                     </div>
                 </Column>

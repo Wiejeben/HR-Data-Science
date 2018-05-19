@@ -2,7 +2,7 @@ import DNA from "./DNA";
 
 export default class Population {
     private readonly target: string;
-    private mutationRate: number;
+    private readonly mutationRate: number;
     private population: DNA[] = [];
     private matingPool: DNA[] = [];
     private generation: number = 0;
@@ -13,7 +13,7 @@ export default class Population {
 
         // Create initial population
         for (let i = 0; i < maxPopulation; i++) {
-            this.population[i] = new DNA(this.target.length);
+            this.population[i] = DNA.Random(this.target.length);
         }
     }
 

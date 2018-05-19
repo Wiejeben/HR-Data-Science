@@ -1,11 +1,34 @@
 export default class DNA {
+    public static randomChar(): string {
+        let c = Math.floor(DNA.randomNumber(63, 122));
+        if (c === 63) {
+            c = 32;
+        }
+        if (c === 64) {
+            c = 46;
+        }
+
+        return String.fromCharCode(c);
+    }
+
+    public static randomNumber(min: number, max: number): number {
+        return (Math.random() * (max - min + 1)) + min;
+    }
+
+    public static Random(length: number): DNA {
+        const genes = [];
+        for (let i = 0; i < length; i++) {
+            genes[i] = this.randomChar();
+        }
+
+        return new DNA(genes);
+    }
+
     public genes: string[] = [];
     public fitness: number = 0;
 
-    constructor(length: number) {
-        for (let i = 0; i < length; i++) {
-            this.genes[i] = this.randomChar();
-        }
+    constructor(genes: string[]) {
+        this.genes = genes;
     }
 
     public toString(): string {
@@ -30,43 +53,27 @@ export default class DNA {
      * @return {DNA}
      */
     public crossover(partner: DNA): DNA {
-        const child = new DNA(this.genes.length);
+        const genes = [];
 
-        const midpoint = Math.floor(this.randomNumber(0, this.genes.length));
+        const midpoint = Math.floor(DNA.randomNumber(0, this.genes.length));
 
         // Half from one, half from the other
         for (let i = 0; i < this.genes.length; i++) {
             if (i > midpoint) {
-                child.genes[i] = this.genes[i];
+                genes[i] = this.genes[i];
             } else {
-                child.genes[i] = partner.genes[i];
+                genes[i] = partner.genes[i];
             }
         }
 
-        return child;
+        return new DNA(genes);
     }
 
     public mutate(rate: number): void {
         for (let i = 0; i < this.genes.length; i++) {
             if (Math.random() < rate) {
-                this.genes[i] = this.randomChar();
+                this.genes[i] = DNA.randomChar();
             }
         }
-    }
-
-    private randomChar(): string {
-        let c = this.randomNumber(63, 122);
-        if (c === 63) {
-            c = 32;
-        }
-        if (c === 64) {
-            c = 46;
-        }
-
-        return String.fromCharCode(c);
-    }
-
-    private randomNumber(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }
