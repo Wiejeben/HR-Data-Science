@@ -27,6 +27,37 @@ export default class App extends React.Component<any, IAppState> {
         };
     }
 
+    /**
+     * Initialize a new population and reset state.
+     *
+     * @return {IAppState}
+     */
+    public init(): IAppState {
+        this.population = new Population(this.targetPhrase, this.mutationRate, this.maxPopulation);
+
+        this.population.calcFitness();
+        return {
+            ...this.getPopulationStatistics(),
+            totalExecutionTime: 0,
+        };
+    }
+
+    /**
+     * Get most up to date population statistics.
+     * @return {IAppState}
+     */
+    public getPopulationStatistics() {
+        return {
+            bestPhrase: this.population.best().getPhrase(),
+            population: this.population.getPopulation(),
+            averageFitness: this.population.averageFitness(),
+            totalGenerations: this.population.getGeneration(),
+        };
+    }
+
+    /**
+     * Evolve population into the next generation.
+     */
     public evolve(): void {
         const start = performance.now();
         // Prepare mating pool
@@ -40,37 +71,21 @@ export default class App extends React.Component<any, IAppState> {
         const end = performance.now();
 
         this.setState({
-            ...this.getPopulationState(),
+            ...this.getPopulationStatistics(),
             totalExecutionTime: this.state.totalExecutionTime + (end - start)
         });
 
+        // Generate next generation if we haven't solved the problem.
         if (this.population.best().getPhrase() !== this.targetPhrase) {
             window.requestAnimationFrame(this.evolve)
         }
-
     }
 
-    public getPopulationState() {
-        return {
-            bestPhrase: this.population.best().getPhrase(),
-            population: this.population.getPopulation(),
-            averageFitness: this.population.averageFitness(),
-            totalGenerations: this.population.getGeneration(),
-        };
-    }
-
+    /**
+     * Reset population.
+     */
     public restart() {
         this.setState({...this.init()});
-    }
-
-    public init() {
-        this.population = new Population(this.targetPhrase, this.mutationRate, this.maxPopulation);
-
-        this.population.calcFitness();
-        return {
-            ...this.getPopulationState(),
-            totalExecutionTime: 0,
-        };
     }
 
     public render() {
