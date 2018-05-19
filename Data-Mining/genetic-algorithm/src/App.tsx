@@ -9,18 +9,20 @@ interface IAppState {
     averageFitness: number;
     totalGenerations: number;
     totalExecutionTime: number;
+    fastForward: boolean;
 }
 
 export default class App extends React.Component<any, IAppState> {
-    protected targetPhrase: string = 'Just do it.';
+    protected targetPhrase: string = 'To be or not to be.';
     protected mutationRate: number = 0.01;
-    protected maxPopulation: number = 150;
+    protected maxPopulation: number = 200;
     protected population: Population;
 
     constructor(props: any) {
         super(props);
         this.evolve = this.evolve.bind(this);
         this.restart = this.restart.bind(this);
+        this.forward = this.forward.bind(this);
 
         this.state = {
             ...this.init(),
@@ -39,6 +41,7 @@ export default class App extends React.Component<any, IAppState> {
         return {
             ...this.getPopulationStatistics(),
             totalExecutionTime: 0,
+            fastForward: false,
         };
     }
 
@@ -77,8 +80,18 @@ export default class App extends React.Component<any, IAppState> {
 
         // Generate next generation if we haven't solved the problem.
         if (this.population.best().getPhrase() !== this.targetPhrase) {
+            // Skip waiting for animation frames
+            if (this.state.fastForward) {
+                this.evolve();
+                return;
+            }
+
             window.requestAnimationFrame(this.evolve)
         }
+    }
+
+    public forward() {
+        this.setState({fastForward: true});
     }
 
     /**
@@ -97,20 +110,24 @@ export default class App extends React.Component<any, IAppState> {
 
                     <div>
                         total generations: {this.state.totalGenerations}<br/>
-                        average fitness: {(this.state.averageFitness * 100).toFixed(2)}%<br/>
+                        average fitness: {(this.state.averageFitness * 100).toFixed(2)}<br/>
                         total population: {this.maxPopulation}<br/>
                         mutation rate: {this.mutationRate * 100}%<br/>
                         average execution
                         time: {(this.state.totalGenerations > 0) ? (this.state.totalExecutionTime / this.state.totalGenerations).toFixed(2) : 0}ms<br/>
                         <button onClick={this.evolve}>Start evolving</button>
                         <button onClick={this.restart}>Restart</button>
+                        <button onClick={this.forward}>Fast forwards</button>
                     </div>
                 </Column>
-                <Column>
-                    <ul>
-                        {this.state.population.map((value, key) => <li key={key}>{value.getPhrase()}</li>)}
-                    </ul>
-                </Column>
+                {this.targetPhrase.length <= 50 ?
+                    <Column>
+                        <ul>
+                            {this.state.population.map((value, key) => <li key={key}>{value.getPhrase()}</li>)}
+                        </ul>
+                    </Column>
+                    : ''}
+
             </Wrapper>
         );
     }

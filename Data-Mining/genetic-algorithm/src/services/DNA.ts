@@ -5,15 +5,9 @@
  */
 export default class DNA {
     public static randomChar(): string {
-        let c = Math.floor(DNA.randomNumber(63, 122));
-        if (c === 63) {
-            c = 32;
-        }
-        if (c === 64) {
-            c = 46;
-        }
-
-        return String.fromCharCode(c);
+        const allowedCharacters = ' abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*(),.?-_=+:"/<>';
+        const i = Math.floor(DNA.randomNumber(0, allowedCharacters.length));
+        return allowedCharacters[i];
     }
 
     public static randomNumber(min: number, max: number): number {
@@ -51,7 +45,7 @@ export default class DNA {
      * @param {string} target
      */
     public calcFitness(target: string): void {
-        let score = 0;
+        let score = 1;
         for (let i = 0; i < this.genes.length; i++) {
             if (this.genes[i] === target.charAt(i)) {
                 score++;
@@ -59,7 +53,7 @@ export default class DNA {
         }
 
         // Use pow to make a change have a larger impact on the score
-        this.fitness = Math.pow(score / target.length, 10);
+        this.fitness = Math.pow(score / target.length, 100);
     }
 
     /**
