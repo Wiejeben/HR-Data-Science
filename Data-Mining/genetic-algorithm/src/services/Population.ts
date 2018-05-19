@@ -1,15 +1,18 @@
 import DNA from "./DNA";
+import AbstractPool from "./pools/AbstractPool";
+import DefaultPool from "./pools/DefaultPool";
 
 export default class Population {
     private readonly target: string;
     private readonly mutationRate: number;
     private population: DNA[] = [];
-    private matingPool: DNA[] = [];
+    private pool: AbstractPool;
     private generation: number = 0;
 
     constructor(target: string, mutationRate: number, maxPopulation: number) {
         this.target = target;
         this.mutationRate = mutationRate;
+        this.pool = new DefaultPool(this);
 
         // Create initial population
         for (let i = 0; i < maxPopulation; i++) {
@@ -28,30 +31,14 @@ export default class Population {
      * Generate mating pool.
      */
     public naturalSelection(): void {
-        this.matingPool = [];
-
-        for (const dna of this.population) {
-            const n = (dna.fitness / this.best().fitness) * 100;
-            for (let j = 0; j < n; j++) {
-                this.matingPool.push(dna);
-            }
-        }
+        this.pool.naturalSelection();
     }
 
     /**
      * Create next generation population
      */
     public generate(): void {
-        for (let i = 0; i < this.population.length; i++) {
-            const left = this.matingPool[Math.floor(this.randomNumber(0, this.matingPool.length - 1))];
-            const right = this.matingPool[Math.floor(this.randomNumber(0, this.matingPool.length - 1))];
-
-            const child = left.crossover(right);
-            child.mutate(this.mutationRate);
-
-            // Overwrite existing population
-            this.population[i] = child;
-        }
+        this.population = this.pool.generate();
         this.generation++;
     }
 
@@ -90,7 +77,7 @@ export default class Population {
         return this.generation;
     }
 
-    private randomNumber(min: number, max: number): number {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+    public getMutationRate(): number {
+        return this.mutationRate;
     }
 }

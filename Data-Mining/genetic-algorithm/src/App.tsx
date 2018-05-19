@@ -12,7 +12,7 @@ interface IAppState {
 }
 
 export default class App extends React.Component<any, IAppState> {
-    protected targetPhrase: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris facilisis sagittis venenatis.';
+    protected targetPhrase: string = 'To be or not to be.';
     protected mutationRate: number = 0.01;
     protected maxPopulation: number = 200;
     protected population: Population;
@@ -29,9 +29,14 @@ export default class App extends React.Component<any, IAppState> {
 
     public evolve(): void {
         const start = performance.now();
-        this.population.calcFitness();
+        // Prepare mating pool
         this.population.naturalSelection();
+
+        // Generate new population
         this.population.generate();
+
+        // Calculate fitness
+        this.population.calcFitness();
         const end = performance.now();
 
         this.setState({
@@ -42,6 +47,7 @@ export default class App extends React.Component<any, IAppState> {
         if (this.population.best().getPhrase() !== this.targetPhrase) {
             window.requestAnimationFrame(this.evolve)
         }
+
     }
 
     public getPopulationState() {
