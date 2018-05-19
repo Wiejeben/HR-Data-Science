@@ -43,7 +43,8 @@ export default class DNA {
             }
         }
 
-        this.fitness = score / target.length;
+        // Use pow to make a change have a larger impact on the score
+        this.fitness = Math.pow(score / target.length, 10);
     }
 
     /**

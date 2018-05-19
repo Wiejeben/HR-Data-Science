@@ -32,13 +32,10 @@ export default class App extends React.Component<any, IAppState> {
     constructor(props: any) {
         super(props);
         this.evolve = this.evolve.bind(this);
+        this.restart = this.restart.bind(this);
 
-        this.population = new Population(this.targetPhrase, this.mutationRate, this.maxPopulation);
-
-        this.population.calcFitness();
         this.state = {
-            ...this.getPopulationState(),
-            totalExecutionTime: 0,
+            ...this.init(),
         };
     }
 
@@ -68,6 +65,20 @@ export default class App extends React.Component<any, IAppState> {
         };
     }
 
+    public restart() {
+        this.setState({...this.init()});
+    }
+
+    public init() {
+        this.population = new Population(this.targetPhrase, this.mutationRate, this.maxPopulation);
+
+        this.population.calcFitness();
+        return {
+            ...this.getPopulationState(),
+            totalExecutionTime: 0,
+        };
+    }
+
     public render() {
         return (
             <Wrapper>
@@ -80,8 +91,10 @@ export default class App extends React.Component<any, IAppState> {
                         average fitness: {(this.state.averageFitness * 100).toFixed(2)}%<br/>
                         total population: {this.maxPopulation}<br/>
                         mutation rate: {this.mutationRate * 100}%<br/>
-                        average execution time: { (this.state.totalGenerations > 0) ? (this.state.totalExecutionTime / this.state.totalGenerations).toFixed(2) : 0}ms<br/>
+                        average execution
+                        time: {(this.state.totalGenerations > 0) ? (this.state.totalExecutionTime / this.state.totalGenerations).toFixed(2) : 0}ms<br/>
                         <button onClick={this.evolve}>Start evolving</button>
+                        <button onClick={this.restart}>Restart</button>
                     </div>
                 </Column>
                 <Column>
