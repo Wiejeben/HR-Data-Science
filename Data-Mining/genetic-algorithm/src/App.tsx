@@ -35,30 +35,30 @@ export default class App extends React.Component<any, IAppState> {
         this.population = new Population(this.targetPhrase, this.mutationRate, this.maxPopulation);
 
         this.population.calcFitness();
-
         this.state = {
-            bestPhrase: this.population.best().toString(),
-            population: this.population.getPopulation(),
-            averageFitness: this.population.averageFitness(),
-            totalGenerations: 0,
+            ...this.getPopulationState(),
         };
     }
 
     public evolve(): void {
         this.population.naturalSelection();
         this.population.generate();
-        this.population.calcFitness();
 
-        this.setState({
-            bestPhrase: this.population.best().toString(),
-            population: this.population.getPopulation(),
-            averageFitness: this.population.averageFitness(),
-            totalGenerations: this.population.getGeneration(),
-        });
+        this.population.calcFitness();
+        this.setState(this.getPopulationState());
 
         if (this.population.best().toString() !== this.targetPhrase) {
             window.requestAnimationFrame(this.evolve)
         }
+    }
+
+    public getPopulationState() {
+        return {
+            bestPhrase: this.population.best().toString(),
+            population: this.population.getPopulation(),
+            averageFitness: this.population.averageFitness(),
+            totalGenerations: this.population.getGeneration(),
+        };
     }
 
     public render() {
@@ -72,8 +72,8 @@ export default class App extends React.Component<any, IAppState> {
                         total generations: {this.state.totalGenerations}<br/>
                         average fitness: {(this.state.averageFitness * 100).toFixed(2)}%<br/>
                         total population: {this.maxPopulation}<br/>
-                        mutation rate: {this.mutationRate}%<br/>
-                        <button onClick={this.evolve}>Evolve</button>
+                        mutation rate: {this.mutationRate * 100}%<br/>
+                        <button onClick={this.evolve}>Start evolving</button>
                     </div>
                 </Column>
                 <Column>
