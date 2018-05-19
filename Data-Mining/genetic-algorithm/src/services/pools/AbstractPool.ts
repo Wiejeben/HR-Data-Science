@@ -10,5 +10,5 @@ export default abstract class AbstractPool {
 
     public abstract naturalSelection(): void;
 
-    public abstract generate(): DNA[];
+    public abstract select(): DNA;
 }

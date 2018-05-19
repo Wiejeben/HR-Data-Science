@@ -12,9 +12,9 @@ interface IAppState {
 }
 
 export default class App extends React.Component<any, IAppState> {
-    protected targetPhrase: string = 'To be or not to be.';
+    protected targetPhrase: string = 'Just do it.';
     protected mutationRate: number = 0.01;
-    protected maxPopulation: number = 200;
+    protected maxPopulation: number = 150;
     protected population: Population;
 
     constructor(props: any) {

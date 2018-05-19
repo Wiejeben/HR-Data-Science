@@ -23,25 +23,8 @@ export default class DefaultPool extends AbstractPool {
         }
     }
 
-    public generate(): DNA[] {
-        const newPopulation = [];
-
-        if (this.matingPool.length === 0) {
-            throw Error('Mating pool not yet generated');
-        }
-
-        for (let i = 0; i < this.population.getPopulation().length; i++) {
-            const left = this.matingPool[Math.floor(this.randomNumber(0, this.matingPool.length - 1))];
-            const right = this.matingPool[Math.floor(this.randomNumber(0, this.matingPool.length - 1))];
-
-            const child = left.crossover(right);
-            child.mutate(this.population.getMutationRate());
-
-            // Overwrite existing population
-            newPopulation[i] = child;
-        }
-
-        return newPopulation;
+    public select(): DNA {
+        return this.matingPool[Math.floor(this.randomNumber(0, this.matingPool.length - 1))];
     }
 
     private randomNumber(min: number, max: number): number {

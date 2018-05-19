@@ -1,6 +1,7 @@
 import DNA from "./DNA";
 import AbstractPool from "./pools/AbstractPool";
-import DefaultPool from "./pools/DefaultPool";
+// import DefaultPool from "./pools/DefaultPool";
+import RouletteWheelPool from "./pools/RouletteWheelPool";
 
 export default class Population {
     private readonly target: string;
@@ -12,7 +13,7 @@ export default class Population {
     constructor(target: string, mutationRate: number, maxPopulation: number) {
         this.target = target;
         this.mutationRate = mutationRate;
-        this.pool = new DefaultPool(this);
+        this.pool = new RouletteWheelPool(this);
 
         // Create initial population
         for (let i = 0; i < maxPopulation; i++) {
@@ -38,7 +39,17 @@ export default class Population {
      * Create next generation population
      */
     public generate(): void {
-        this.population = this.pool.generate();
+        for (let i = 0; i < this.population.length; i++) {
+            const left = this.pool.select();
+            const right = this.pool.select();
+
+            const child = left.crossover(right);
+            child.mutate(this.mutationRate);
+
+            // Overwrite existing population
+            this.population[i] = child;
+        }
+
         this.generation++;
     }
 
@@ -49,7 +60,7 @@ export default class Population {
      */
     public averageFitness(): number {
         const sum = this.population
-            .map(dna => dna.fitness)
+            .map<number>(dna => dna.fitness)
             .reduce((total, current) => total + current, 0);
 
         return sum / this.population.length;
