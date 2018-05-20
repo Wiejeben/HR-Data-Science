@@ -22,7 +22,7 @@ export default class App extends React.Component<any, IAppState> {
         super(props);
         this.evolve = this.evolve.bind(this);
         this.restart = this.restart.bind(this);
-        this.forward = this.forward.bind(this);
+        this.toggleFastForward = this.toggleFastForward.bind(this);
 
         this.state = {
             ...this.init(),
@@ -90,8 +90,8 @@ export default class App extends React.Component<any, IAppState> {
         }
     }
 
-    public forward() {
-        this.setState({fastForward: true});
+    public toggleFastForward() {
+        this.setState({fastForward: !this.state.fastForward});
     }
 
     /**
@@ -109,15 +109,18 @@ export default class App extends React.Component<any, IAppState> {
                     <Title>Best phrase: {this.state.bestPhrase}</Title>
 
                     <div>
-                        total generations: {this.state.totalGenerations}<br/>
-                        average fitness: {(this.state.averageFitness * 100).toFixed(2)}<br/>
-                        total population: {this.maxPopulation}<br/>
-                        mutation rate: {this.mutationRate * 100}%<br/>
-                        average execution
-                        time: {(this.state.totalGenerations > 0) ? (this.state.totalExecutionTime / this.state.totalGenerations).toFixed(2) : 0}ms<br/>
-                        <button onClick={this.evolve}>Start evolving</button>
+                        <p>
+                            total generations: {this.state.totalGenerations}<br/>
+                            average fitness: {(this.state.averageFitness * 100).toFixed(2)}<br/>
+                            total population: {this.maxPopulation}<br/>
+                            mutation rate: {this.mutationRate * 100}%<br/>
+                            average execution
+                            time: {(this.state.totalGenerations > 0) ? (this.state.totalExecutionTime / this.state.totalGenerations).toFixed(2) : 0}ms<br/>
+                        </p>
+                        <h3>Options</h3>
+                        <button onClick={this.evolve}>Start evolving</button><br />
+                        <label><input type="checkbox" checked={this.state.fastForward} onChange={this.toggleFastForward} /> fast forward</label><br />
                         <button onClick={this.restart}>Restart</button>
-                        <button onClick={this.forward}>Fast forwards</button>
                     </div>
                 </Column>
                 {this.targetPhrase.length < 50 && this.maxPopulation < 200 ?
