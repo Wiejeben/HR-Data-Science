@@ -63,8 +63,7 @@ export default class Population {
             .map<number>(dna => dna.fitness)
             .reduce((total, current) => total + current, 0);
 
-        // TODO: Needs fixing
-        return (sum / this.population.length) / Math.pow(1, 100);
+        return sum / this.population.length;
     }
 
     /**

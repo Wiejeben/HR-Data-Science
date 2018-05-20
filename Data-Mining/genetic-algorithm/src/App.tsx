@@ -14,8 +14,8 @@ interface IAppState {
 
 export default class App extends React.Component<any, IAppState> {
     protected targetPhrase: string = 'To be or not to be.';
-    protected mutationRate: number = 0.01;
-    protected maxPopulation: number = 200;
+    protected mutationRate: number = 0.05;
+    protected maxPopulation: number = 100;
     protected population: Population;
 
     constructor(props: any) {
@@ -120,7 +120,7 @@ export default class App extends React.Component<any, IAppState> {
                         <button onClick={this.forward}>Fast forwards</button>
                     </div>
                 </Column>
-                {this.targetPhrase.length <= 50 ?
+                {this.targetPhrase.length < 50 && this.maxPopulation < 200 ?
                     <Column>
                         <ul>
                             {this.state.population.map((value, key) => <li key={key}>{value.getPhrase()}</li>)}
